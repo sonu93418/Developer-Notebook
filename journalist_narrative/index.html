@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="desk-noise" aria-hidden="true"></div>
+
+  <main class="journal-app" data-state="cover" data-opening="false" data-closing="false">
+    <section class="cover-view is-visible" aria-label="Journal cover">
+      <div class="cover-stage">
+        <div class="book-stack" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <article class="book-cover" id="bookCover">
+          <div class="book-spine" aria-hidden="true"></div>
+          <div class="cover-inner">
+            <div class="rule"></div>
+            <h1>THE<br>SCRIBBLER'S<br>JOURNAL</h1>
+            <div class="rule"></div>
+            <p class="cover-note">Vol. 2024 - A collection of code and curiosities.</p>
+            <button class="open-book-btn" id="openBook" type="button">OPEN THE BOOK</button>
+            <p class="edition">EDITION I</p>
+            <p class="est">EST. MMXXIV</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="book-view" aria-label="Journal content">
+      <aside class="sidebar">
+        <button class="back-cover" id="backCover" type="button">Close Book</button>
+        <div class="brand-block">
+          <p class="brand-name">The Scribbler's<br>Journal</p>
+          <p class="brand-vol">Vol. 2024 - No. 12</p>
+        </div>
+
+        <nav class="book-nav" aria-label="Journal sections">
+          <button class="nav-item is-active" data-target="index" type="button">Index</button>
+          <button class="nav-item" data-target="archive" type="button">The Archive</button>
+          <button class="nav-item" data-target="marginalia" type="button">Marginalia</button>
+          <button class="nav-item" data-target="colophon" type="button">Colophon</button>
+        </nav>
+
+        <button class="new-entry" id="newEntry" type="button">New Entry</button>
+      </aside>
+
+      <div class="spread-wrap">
+        <article class="spread-page page-index is-active" data-page="index">
+          <header class="page-header center">
+            <h2>Table of Contents</h2>
+            <div class="page-divider"></div>
+          </header>
+
+          <ul class="toc-list">
+            <li>
+              <span class="seq">S01</span>
+              <button type="button" data-target="marginalia">About</button>
+              <span class="pg">pg. 03</span>
+            </li>
+            <li>
+              <span class="seq">S02</span>
+              <button type="button" data-target="archive">Work</button>
+              <span class="pg">pg. 12</span>
+            </li>
+            <li>
+              <span class="seq">S03</span>
+              <button type="button" data-target="archive">Projects</button>
+              <span class="pg">pg. 19</span>
+            </li>
+            <li>
+              <span class="seq">S04</span>
+              <button type="button" data-target="colophon">Essays</button>
+              <span class="pg">pg. 27</span>
+            </li>
+            <li>
+              <span class="seq">S05</span>
+              <button type="button" data-target="colophon">Contact</button>
+              <span class="pg">pg. 36</span>
+            </li>
+          </ul>
+
+          <aside class="sticky sticky-top">Start here... Do not skip the prologue.</aside>
+          <figure class="polaroid polaroid-side">
+            <div class="shot typewriter"></div>
+            <figcaption>The tools.</figcaption>
+          </figure>
+        </article>
+
+        <article class="spread-page page-archive" data-page="archive">
+          <header class="page-header left">
+            <h2>The Archive</h2>
+            <p>A collection of ongoing experiments, polished artifacts, and half-baked ideas left out to dry.</p>
+          </header>
+
+          <div class="archive-grid">
+            <figure class="polaroid tilt-left">
+              <div class="shot orb"></div>
+              <figcaption>Typewriter Simulator v2</figcaption>
+            </figure>
+            <figure class="polaroid tilt-right">
+              <div class="shot globe"></div>
+              <figcaption>Inkwell Blog Theme</figcaption>
+            </figure>
+            <figure class="polaroid tilt-left soft">
+              <div class="shot device"></div>
+              <figcaption>Marginalia Component Library</figcaption>
+            </figure>
+            <figure class="polaroid tilt-right tall">
+              <div class="shot portrait"></div>
+              <figcaption>Lost in Transit Photo Essay</figcaption>
+            </figure>
+          </div>
+
+          <div class="label-row">
+            <span class="tiny-note yellow">React / WebAudio API</span>
+            <span class="tiny-note gray">TailwindCSS / Ghost CMS</span>
+            <span class="tiny-note gray">Figma Storybook</span>
+            <span class="tiny-note yellow">Next.js Framer Motion</span>
+          </div>
+
+          <aside class="sticky sticky-right">Note: some of these are still quite dusty.</aside>
+        </article>
+
+        <article class="spread-page page-marginalia" data-page="marginalia">
+          <div class="marginalia-columns">
+            <section class="left-page">
+              <header class="page-header left">
+                <h2>About the Author</h2>
+                <p class="date">Oct. 24, 2024</p>
+              </header>
+
+              <div class="bio-layout">
+                <div class="bio-text">
+                  <p>It started, as most things do, with a mild curiosity and a significant lack of supervision. I have spent the better part of a decade trying to make silicon rocks think, or at least pretend to think in a way that feels helpful.</p>
+                  <p>I view code less as an engineering discipline and more as a strange form of modern poetry. It is structural, it has rules, but there is a definite art to making it elegant.</p>
+                  <p>When I am not staring into the abyss of an IDE, I am usually found trying to master the perfect pour-over coffee and rereading dusty sci-fi novels.</p>
+                </div>
+
+                <figure class="polaroid author">
+                  <div class="shot author"></div>
+                  <figcaption>Me, contemplating bugs.</figcaption>
+                </figure>
+              </div>
+
+              <div class="stamp-box">
+                VERIFIED<br>
+                reading activity:<br>
+                1.2k commits / coffee.
+              </div>
+            </section>
+
+            <section class="right-page">
+              <header class="page-header left">
+                <h2>The Toolbox</h2>
+              </header>
+
+              <div class="tool-grid">
+                <div class="tool"><small>01</small><strong>JS</strong><span>JAVASCRIPT</span></div>
+                <div class="tool"><small>02</small><strong>TS</strong><span>TYPESCRIPT</span></div>
+                <div class="tool hot"><small>03</small><strong>RE</strong><span>REACT</span></div>
+                <div class="tool"><small>04</small><strong>ND</strong><span>NODE.JS</span></div>
+                <div class="tool"><small>05</small><strong>PY</strong><span>PYTHON</span></div>
+                <div class="tool"><small>06</small><strong>PS</strong><span>POSTGRESQL</span></div>
+                <div class="tool"><small>07</small><strong>TW</strong><span>TAILWIND</span></div>
+                <div class="tool muted"><small>+</small><strong></strong><span></span></div>
+              </div>
+
+              <p class="scribble">Always adding new things... eventually.</p>
+              <aside class="sticky sticky-angle">Mostly organized. Please do not look in that drawer.</aside>
+            </section>
+          </div>
+        </article>
+
+        <article class="spread-page page-colophon" data-page="colophon">
+          <header class="page-header left">
+            <h2>Colophon</h2>
+            <p>The journal was printed in code with paper tones, red ink, and a stubborn respect for margins.</p>
+          </header>
+
+          <div class="colophon-grid">
+            <section>
+              <h3>Design Notes</h3>
+              <ul>
+                <li>Typeface pairing: Newsreader + Be Vietnam Pro</li>
+                <li>Annotations in Caveat for handwritten contrast</li>
+                <li>Fixed editorial column with soft tactile layers</li>
+              </ul>
+            </section>
+            <section>
+              <h3>Write to the Editor</h3>
+              <form class="lined-form" id="contactForm">
+                <label for="entryText">Your message</label>
+                <input id="entryText" name="entryText" type="text" placeholder="Leave a margin note" required>
+                <button class="open-book-btn compact" type="submit">Send Entry</button>
+              </form>
+            </section>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
