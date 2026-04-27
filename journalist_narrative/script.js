@@ -1,6 +1,7 @@
 const app = document.querySelector('.journal-app');
 const openBookButton = document.getElementById('openBook');
 const backCoverButton = document.getElementById('backCover');
+const bookCover = document.getElementById('bookCover');
 const navItems = Array.from(document.querySelectorAll('.nav-item'));
 const spreadPages = Array.from(document.querySelectorAll('.spread-page'));
 const tocButtons = Array.from(document.querySelectorAll('.toc-list button[data-target]'));
@@ -8,10 +9,73 @@ const newEntryButton = document.getElementById('newEntry');
 const contactForm = document.getElementById('contactForm');
 
 const pageOrder = ['index', 'archive', 'marginalia', 'colophon'];
-const OPEN_DURATION_MS = 1700;
-const CLOSE_DURATION_MS = 1450;
+const OPEN_DURATION_MS = getCssDurationMs('--open-ms', 1680);
+const CLOSE_DURATION_MS = getCssDurationMs('--close-ms', 1420);
 let currentPage = 'index';
 let isAnimating = false;
+
+function setVisiblePages(visiblePages) {
+  const visibleSet = new Set(visiblePages.filter(Boolean));
+  spreadPages.forEach((page) => {
+    page.hidden = !visibleSet.has(page);
+  });
+}
+
+function initializePageState() {
+  const activePage = spreadPages.find((page) => page.classList.contains('is-active'))
+    || spreadPages.find((page) => page.dataset.page === 'index');
+
+  spreadPages.forEach((page) => {
+    const isActive = page === activePage;
+    page.classList.toggle('is-active', isActive);
+    page.classList.remove('exit-left', 'enter-right');
+  });
+
+  if (activePage) {
+    setVisiblePages([activePage]);
+    currentPage = activePage.dataset.page;
+  } else {
+    setVisiblePages([]);
+  }
+
+  setActiveNav(currentPage);
+}
+
+function getCssDurationMs(cssVarName, fallbackMs) {
+  const value = getComputedStyle(app).getPropertyValue(cssVarName).trim();
+  if (!value) return fallbackMs;
+
+  const parsed = Number.parseFloat(value);
+  if (Number.isNaN(parsed)) return fallbackMs;
+  if (value.endsWith('ms')) return parsed;
+  if (value.endsWith('s')) return parsed * 1000;
+
+  return fallbackMs;
+}
+
+function waitForCoverAnimation(animationName, fallbackMs, onDone) {
+  if (!bookCover) {
+    setTimeout(onDone, fallbackMs);
+    return;
+  }
+
+  let isDone = false;
+  const finish = () => {
+    if (isDone) return;
+    isDone = true;
+    bookCover.removeEventListener('animationend', onAnimationEnd);
+    onDone();
+  };
+
+  const onAnimationEnd = (event) => {
+    if (event.target === bookCover && event.animationName === animationName) {
+      finish();
+    }
+  };
+
+  bookCover.addEventListener('animationend', onAnimationEnd);
+  setTimeout(finish, fallbackMs + 140);
+}
 
 function setActiveNav(target) {
   navItems.forEach((item) => {
@@ -23,22 +87,14 @@ function setActivePage(target) {
   if (isAnimating) return;
   if (target === currentPage) return;
 
-  const current = spreadPages.find((page) => page.dataset.page === currentPage);
   const next = spreadPages.find((page) => page.dataset.page === target);
-  if (!current || !next) return;
+  if (!next) return;
 
-  current.classList.add('exit-left');
-  next.classList.add('enter-right');
-
-  requestAnimationFrame(() => {
-    current.classList.remove('is-active');
-    next.classList.add('is-active');
-    next.classList.remove('enter-right');
+  spreadPages.forEach((page) => {
+    page.classList.remove('is-active', 'exit-left', 'enter-right');
   });
-
-  setTimeout(() => {
-    current.classList.remove('exit-left');
-  }, 360);
+  next.classList.add('is-active');
+  setVisiblePages([next]);
 
   currentPage = target;
   setActiveNav(target);
@@ -52,6 +108,9 @@ function resetToIndexPage() {
   const indexPage = spreadPages.find((page) => page.dataset.page === 'index');
   if (indexPage) {
     indexPage.classList.add('is-active');
+    setVisiblePages([indexPage]);
+  } else {
+    setVisiblePages([]);
   }
 
   currentPage = 'index';
@@ -66,13 +125,14 @@ function openBookWithAnimation() {
   openBookButton.disabled = true;
   backCoverButton.disabled = true;
 
-  setTimeout(() => {
+  waitForCoverAnimation('openCover', OPEN_DURATION_MS, () => {
     app.dataset.state = 'book';
     app.dataset.opening = 'false';
+    app.dataset.closing = 'false';
     openBookButton.disabled = false;
     backCoverButton.disabled = false;
     isAnimating = false;
-  }, OPEN_DURATION_MS);
+  });
 }
 
 function closeBookWithAnimation() {
@@ -80,15 +140,17 @@ function closeBookWithAnimation() {
   isAnimating = true;
   app.dataset.closing = 'true';
   app.dataset.opening = 'false';
+  openBookButton.disabled = true;
   backCoverButton.disabled = true;
 
-  setTimeout(() => {
+  waitForCoverAnimation('closeCover', CLOSE_DURATION_MS, () => {
     app.dataset.state = 'cover';
     app.dataset.closing = 'false';
+    openBookButton.disabled = false;
     backCoverButton.disabled = false;
     isAnimating = false;
     resetToIndexPage();
-  }, CLOSE_DURATION_MS);
+  });
 }
 
 openBookButton.addEventListener('click', () => {
@@ -123,3 +185,5 @@ contactForm.addEventListener('submit', (event) => {
   input.value = '';
   input.placeholder = 'Entry archived in the margin. Thank you.';
 });
+
+initializePageState();

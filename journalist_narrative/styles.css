@@ -51,11 +51,17 @@ body {
 
 .cover-view {
   min-height: 100vh;
-  display: grid;
+  display: none;
   place-items: center;
   padding: 2rem;
   position: relative;
   z-index: 4;
+}
+
+.journal-app[data-state="cover"] .cover-view,
+.journal-app[data-opening="true"] .cover-view,
+.journal-app[data-state="book"][data-closing="true"] .cover-view {
+  display: grid;
 }
 
 .cover-stage {
@@ -237,22 +243,32 @@ body {
 
 .book-view {
   display: none;
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
   min-height: 100vh;
   grid-template-columns: 190px minmax(0, 1fr);
   opacity: 1;
   transform: translateX(0) scale(1);
+  transform-origin: left center;
+  clip-path: inset(0 0 0 0);
+  overflow: hidden;
+  will-change: opacity, transform, clip-path;
 }
 
 .journal-app[data-opening="true"] .book-view {
   display: grid;
   opacity: 0;
-  transform: translateX(56px) scale(0.975);
-  animation: revealBook 1080ms cubic-bezier(0.16, 0.92, 0.22, 1) 600ms forwards;
+  transform: translateX(20px) scale(0.992);
+  clip-path: inset(0 0 0 0);
+  animation: revealBook var(--open-ms) cubic-bezier(0.16, 0.92, 0.22, 1) 80ms forwards;
+  pointer-events: none;
 }
 
 .journal-app[data-opening="true"] .cover-view {
   position: fixed;
   inset: 0;
+  z-index: 8;
   pointer-events: none;
 }
 
@@ -273,7 +289,10 @@ body {
   position: fixed;
   inset: 0;
   z-index: 8;
+  background: radial-gradient(circle at 20% 10%, #dad2c3 0%, #cec6b8 46%, #c8c0b3 100%);
   pointer-events: none;
+  opacity: 0;
+  animation: revealCoverLayer 260ms ease-out forwards;
 }
 
 .journal-app[data-state="book"][data-closing="true"] .book-cover {
@@ -291,15 +310,25 @@ body {
 
 .journal-app[data-state="book"][data-closing="true"] .book-view {
   display: grid;
-  animation: hideBook 980ms cubic-bezier(0.2, 0.84, 0.24, 1) forwards;
+  animation: hideBook var(--close-ms) cubic-bezier(0.2, 0.84, 0.24, 1) forwards;
+  pointer-events: none;
 }
 
 .journal-app[data-state="book"] .cover-view {
   display: none;
 }
 
+.journal-app[data-state="book"][data-closing="false"] .cover-view {
+  display: none !important;
+}
+
 .journal-app[data-state="book"] .book-view {
   display: grid;
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  clip-path: inset(0 0 0 0);
+  animation: none;
+  pointer-events: auto;
 }
 
 .sidebar {
@@ -307,8 +336,9 @@ body {
   border-right: 1px solid #d1c5b0;
   padding: 2rem 1rem 1.2rem;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 0.7rem;
+  align-content: start;
 }
 
 .back-cover {
@@ -320,7 +350,8 @@ body {
   letter-spacing: 0.07em;
   text-transform: uppercase;
   padding: 0.5rem 0.6rem;
-  justify-self: start;
+  justify-self: stretch;
+  width: 100%;
   cursor: pointer;
   transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
@@ -333,7 +364,9 @@ body {
 }
 
 .brand-block {
-  margin-bottom: 1.8rem;
+  margin-bottom: 1rem;
+  display: grid;
+  gap: 0.45rem;
 }
 
 .brand-name {
@@ -342,11 +375,12 @@ body {
   font-family: "Newsreader", serif;
   font-style: italic;
   font-size: 1.7rem;
-  line-height: 1.1;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
 }
 
 .brand-vol {
-  margin: 0.55rem 0 0;
+  margin: 0;
   color: #726b5d;
   font-size: 0.83rem;
   font-family: "Space Grotesk", sans-serif;
@@ -356,6 +390,9 @@ body {
   display: grid;
   gap: 0.35rem;
   align-content: start;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 0.2rem;
 }
 
 .nav-item {
@@ -404,6 +441,7 @@ body {
   text-transform: none;
   padding: 0.68rem 0.8rem;
   cursor: pointer;
+  width: 100%;
 }
 
 .spread-wrap {
@@ -412,6 +450,7 @@ body {
 }
 
 .spread-page {
+  display: none;
   position: absolute;
   inset: 2rem;
   background: #eee7d8;
@@ -420,23 +459,44 @@ body {
   padding: clamp(1.5rem, 3vw, 2.4rem);
   overflow: auto;
   opacity: 0;
+  visibility: hidden;
+  z-index: 0;
   pointer-events: none;
   transform: translateX(18px);
   transition: opacity 320ms ease, transform 430ms cubic-bezier(0.2, 0.95, 0.18, 1);
 }
 
+.spread-page[hidden] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
 .spread-page.is-active {
+  display: block;
   opacity: 1;
+  visibility: visible;
+  z-index: 2;
   pointer-events: auto;
   transform: translateX(0);
 }
 
+.spread-page.exit-left,
+.spread-page.enter-right {
+  display: block;
+  visibility: visible;
+}
+
 .spread-page.exit-left {
+  z-index: 1;
   transform: translateX(-20px);
   opacity: 0;
 }
 
 .spread-page.enter-right {
+  z-index: 3;
   transform: translateX(20px);
 }
 
@@ -499,7 +559,12 @@ body {
 }
 
 .sticky {
-  position: absolute;
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: min(100%, 520px);
+  margin-top: 1rem;
+  margin-left: auto;
   background: var(--note);
   color: #2c2202;
   padding: 0.8rem 1rem;
@@ -509,20 +574,14 @@ body {
 }
 
 .sticky-top {
-  top: 2rem;
-  right: 3rem;
   transform: rotate(3deg);
 }
 
 .sticky-right {
-  top: 1.8rem;
-  right: 1.8rem;
   transform: rotate(3deg);
 }
 
 .sticky-angle {
-  right: 1rem;
-  top: 1rem;
   transform: rotate(4deg);
 }
 
@@ -535,10 +594,9 @@ body {
 }
 
 .polaroid-side {
-  position: absolute;
-  right: 2rem;
-  top: 12.6rem;
+  position: relative;
   width: clamp(170px, 23vw, 250px);
+  margin: 1.1rem 0 0 auto;
   transform: rotate(-2.8deg);
 }
 
@@ -592,14 +650,12 @@ body {
 }
 
 .label-row {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  transform: translateX(-20%);
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  max-width: 330px;
+  max-width: 100%;
+  margin-top: 1rem;
 }
 
 .tiny-note {
@@ -907,15 +963,23 @@ body {
 @keyframes revealBook {
   0% {
     opacity: 0;
-    transform: translateX(56px) scale(0.975);
+    transform: translateX(20px) scale(0.992);
+    clip-path: inset(0 0 0 0);
   }
-  65% {
+  55% {
+    opacity: 0.78;
+    transform: translateX(8px) scale(0.996);
+    clip-path: inset(0 0 0 0);
+  }
+  80% {
     opacity: 0.92;
-    transform: translateX(-4px) scale(1.004);
+    transform: translateX(-2px) scale(1.002);
+    clip-path: inset(0 0 0 0);
   }
   100% {
     opacity: 1;
     transform: translateX(0) scale(1);
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -945,10 +1009,23 @@ body {
   0% {
     opacity: 1;
     transform: translateX(0) scale(1);
+    clip-path: inset(0 0 0 0);
+  }
+  40% {
+    opacity: 0.72;
+    transform: translateX(10px) scale(0.994);
+    clip-path: inset(0 42% 0 0);
   }
   100% {
-    opacity: 0;
-    transform: translateX(42px) scale(0.985);
+    opacity: 0.28;
+    transform: translateX(24px) scale(0.985);
+    clip-path: inset(0 90% 0 0);
+  }
+}
+
+@keyframes revealCoverLayer {
+  to {
+    opacity: 1;
   }
 }
 
