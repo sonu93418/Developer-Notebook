@@ -7,6 +7,7 @@ const spreadPages = Array.from(document.querySelectorAll('.spread-page'));
 const tocButtons = Array.from(document.querySelectorAll('.toc-list button[data-target]'));
 const newEntryButton = document.getElementById('newEntry');
 const contactForm = document.getElementById('contactForm');
+const bookTopWatch = document.querySelector('.book-top-watch');
 
 const pageOrder = ['index', 'archive', 'marginalia', 'colophon'];
 const OPEN_DURATION_MS = getCssDurationMs('--open-ms', 1680);
@@ -51,6 +52,13 @@ function getCssDurationMs(cssVarName, fallbackMs) {
   if (value.endsWith('s')) return parsed * 1000;
 
   return fallbackMs;
+}
+
+function updateDigitalWatch() {
+  if (!bookTopWatch) return;
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-GB', { hour12: false });
+  bookTopWatch.textContent = time;
 }
 
 function waitForCoverAnimation(animationName, fallbackMs, onDone) {
@@ -187,3 +195,5 @@ contactForm.addEventListener('submit', (event) => {
 });
 
 initializePageState();
+updateDigitalWatch();
+setInterval(updateDigitalWatch, 1000);
