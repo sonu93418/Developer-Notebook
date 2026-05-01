@@ -882,7 +882,7 @@ body {
   z-index: 2;
   isolation: isolate;
   min-height: 100vh;
-  grid-template-columns: 190px minmax(0, 1fr);
+  grid-template-columns: clamp(220px, 18vw, 260px) minmax(0, 1fr);
   opacity: 1;
   transform: translateX(0) scale(1);
   transform-origin: left center;
@@ -966,10 +966,21 @@ body {
   pointer-events: auto;
 }
 
+/* Hide any alternate nav container that might appear elsewhere when the book is open */
+.journal-app[data-state="book"] .nav-items {
+  display: none !important;
+}
+
+/* Ensure sidebar nav stacks above background layers */
+.journal-app[data-state="book"] .book-nav {
+  position: relative;
+  z-index: 6;
+}
+
 .sidebar {
   background: #d7d0c2;
   border-right: 1px solid #d1c5b0;
-  padding: 2rem 1rem 1.2rem;
+  padding: 1.85rem 1rem 1.2rem;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 0.7rem;
@@ -1009,7 +1020,7 @@ body {
   color: #bb1f16;
   font-family: "Newsreader", serif;
   font-style: italic;
-  font-size: 1.7rem;
+  font-size: 1.45rem;
   line-height: 1.18;
   overflow-wrap: anywhere;
 }
@@ -1077,6 +1088,57 @@ body {
   padding: 0.68rem 0.8rem;
   cursor: pointer;
   width: 100%;
+}
+
+/* Compact social navigation (sidebar) */
+.social-mini {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  align-items: stretch;
+  margin-top: 0.6rem;
+  padding: 0.35rem;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--paper-soft), var(--paper));
+  border: 1px solid var(--line);
+  box-shadow: 0 6px 18px rgba(25, 20, 15, 0.06);
+  justify-self: stretch;
+}
+
+.social-mini-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 0.4rem 0.25rem 0.35rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  line-height: 1;
+  transition: color 160ms ease, background 160ms ease, transform 120ms ease;
+  min-width: 0;
+}
+
+.social-mini-link .icon { width: 18px; height: 18px; display: inline-block; color: var(--ink-muted); }
+.social-mini-link svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+.social-mini-link .label { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+.social-mini-link:hover,
+.social-mini-link:focus-visible {
+  color: var(--oxblood);
+  transform: translateY(-2px);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+@media (max-width: 640px) {
+  .book-view {
+    grid-template-columns: 1fr;
+  }
+
+  .social-mini .label { display: none; }
+  .social-mini { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .spread-wrap {
