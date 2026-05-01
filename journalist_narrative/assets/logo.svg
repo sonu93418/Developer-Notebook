@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">The Developer's Lab Logo</title>
+  <desc id="desc">Rounded square logo with DL letters</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#c8362b"/>
+      <stop offset="100%" stop-color="#8f110b"/>
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#bg)"/>
+  <rect x="54" y="54" width="404" height="404" rx="82" fill="none" stroke="#f1eadb" stroke-opacity="0.35" stroke-width="14"/>
+  <g fill="#f1eadb" font-family="'Space Grotesk', 'Be Vietnam Pro', sans-serif" font-weight="700" text-anchor="middle">
+    <text x="256" y="300" font-size="202" letter-spacing="8">DL</text>
+  </g>
+</svg>
