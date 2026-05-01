@@ -90,6 +90,12 @@ function setCursorPencilState(isPencil) {
   pageCursor.classList.add('is-pencil');
 }
 
+function setActiveNav(target) {
+  navItems.forEach((item) => {
+    item.classList.toggle('is-active', item.dataset.target === target);
+  });
+}
+
 function waitForCoverAnimation(animationName, fallbackMs, onDone) {
   if (!bookCover) {
     setTimeout(onDone, fallbackMs);
@@ -129,12 +135,6 @@ if (pageCursor) {
 
   document.addEventListener('pointerup', () => {
     setCursorPencilState(true);
-  });
-}
-
-function setActiveNav(target) {
-  navItems.forEach((item) => {
-    item.classList.toggle('is-active', item.dataset.target === target);
   });
 }
 
