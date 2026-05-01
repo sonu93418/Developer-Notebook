@@ -1492,6 +1492,8 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
   position: relative;
+  border-radius: 12px;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease, color 180ms ease;
 }
 
 .nav-item::before {
@@ -1518,6 +1520,33 @@ body {
   bottom: 8px;
   width: 2px;
   background: #d22a20;
+}
+
+.nav-item:hover,
+.nav-item:focus-visible {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.1)), rgba(200, 54, 43, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(200, 54, 43, 0.16),
+    0 10px 24px rgba(200, 54, 43, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+  transform: translateX(2px);
+  color: #9d1f18;
+}
+
+.nav-item:first-child:hover,
+.nav-item:first-child:focus-visible {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.14)), rgba(200, 54, 43, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(200, 54, 43, 0.24),
+    0 0 20px rgba(200, 54, 43, 0.18),
+    0 12px 28px rgba(200, 54, 43, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+}
+
+.nav-item:hover::before,
+.nav-item:focus-visible::before {
+  border-color: #c54a40;
+  box-shadow: 0 0 12px rgba(200, 54, 43, 0.22);
 }
 
 .new-entry {
@@ -1626,12 +1655,72 @@ body {
 }
 
 .toc-list li {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 1rem;
-  padding: 0.55rem 0;
+  padding: 0.7rem 0.85rem;
+  margin: 0 -0.1rem;
   border-bottom: 1px dotted #d8cdb9;
+  border-radius: 14px;
+  background: transparent;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease, border-color 180ms ease;
+}
+
+.toc-list li::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04)), rgba(200, 54, 43, 0.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 0 1px rgba(200, 54, 43, 0.1),
+    0 0 0 0 rgba(200, 54, 43, 0);
+  opacity: 0;
+  transition: opacity 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  pointer-events: none;
+}
+
+.toc-list li:hover,
+.toc-list li:focus-within {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.12)), rgba(200, 54, 43, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(200, 54, 43, 0.16),
+    0 10px 26px rgba(200, 54, 43, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+  transform: translateX(2px);
+  border-color: rgba(200, 54, 43, 0.26);
+}
+
+.toc-list li:hover::before,
+.toc-list li:focus-within::before {
+  opacity: 1;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 0 0 1px rgba(200, 54, 43, 0.18),
+    0 0 26px rgba(200, 54, 43, 0.18);
+}
+
+.toc-list li:first-child:hover,
+.toc-list li:first-child:focus-within {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16)), rgba(200, 54, 43, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(200, 54, 43, 0.24),
+    0 0 20px rgba(200, 54, 43, 0.16),
+    0 12px 28px rgba(200, 54, 43, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.toc-list li:first-child:hover::before,
+.toc-list li:first-child:focus-within::before {
+  opacity: 1;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    0 0 0 1px rgba(200, 54, 43, 0.24),
+    0 0 30px rgba(200, 54, 43, 0.22);
 }
 
 .toc-list .seq,
@@ -1649,6 +1738,12 @@ body {
   font-size: clamp(2rem, 3.2vw, 3rem);
   color: #191711;
   cursor: pointer;
+}
+
+.toc-list li:hover button,
+.toc-list li:focus-within button {
+  color: #9d1f18;
+  text-shadow: 0 0 12px rgba(200, 54, 43, 0.22);
 }
 
 .sticky {
