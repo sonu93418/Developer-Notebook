@@ -30,6 +30,71 @@ body {
   background: radial-gradient(circle at 20% 10%, #dad2c3 0%, #cec6b8 46%, #c8c0b3 100%);
 }
 
+@media (pointer: fine) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: none;
+  }
+}
+
+.page-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0) scale(0.9);
+  transition: opacity 160ms ease, transform 120ms ease;
+  will-change: transform, opacity;
+}
+
+.page-cursor.is-visible {
+  opacity: 1;
+}
+
+.page-cursor-dot {
+  display: none;
+}
+
+.page-cursor-pencil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--oxblood);
+  opacity: 1;
+  transform: scale(1) rotate(-14deg);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.page-cursor-pencil svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .page-cursor {
+    display: none;
+  }
+
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    cursor: auto;
+  }
+}
+
 .page-header-top {
   position: relative;
   z-index: 20;

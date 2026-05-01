@@ -8,12 +8,19 @@ const tocButtons = Array.from(document.querySelectorAll('.toc-list button[data-t
 const newEntryButton = document.getElementById('newEntry');
 const contactForm = document.getElementById('contactForm');
 const bookTopWatch = document.querySelector('.book-top-watch');
+const pageCursor = document.querySelector('.page-cursor');
 
 const pageOrder = ['index', 'archive', 'marginalia', 'colophon'];
 const OPEN_DURATION_MS = getCssDurationMs('--open-ms', 1680);
 const CLOSE_DURATION_MS = getCssDurationMs('--close-ms', 1420);
 let currentPage = 'index';
 let isAnimating = false;
+let cursorX = 0;
+let cursorY = 0;
+let cursorReady = false;
+let cursorFrame = 0;
+
+const pencilTargets = 'a, button, input, textarea, select, [role="button"], .nav-item, .toc-list button, .open-book-btn, .back-cover, .new-entry, .social-link, .link-chip';
 
 function setVisiblePages(visiblePages) {
   const visibleSet = new Set(visiblePages.filter(Boolean));
@@ -61,6 +68,28 @@ function updateDigitalWatch() {
   bookTopWatch.textContent = time;
 }
 
+function setCursorPosition(x, y) {
+  if (!pageCursor) return;
+  cursorX = x;
+  cursorY = y;
+
+  if (!cursorReady) {
+    pageCursor.classList.add('is-visible');
+    cursorReady = true;
+  }
+
+  if (cursorFrame) return;
+  cursorFrame = window.requestAnimationFrame(() => {
+    pageCursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+    cursorFrame = 0;
+  });
+}
+
+function setCursorPencilState(isPencil) {
+  if (!pageCursor) return;
+  pageCursor.classList.add('is-pencil');
+}
+
 function waitForCoverAnimation(animationName, fallbackMs, onDone) {
   if (!bookCover) {
     setTimeout(onDone, fallbackMs);
@@ -83,6 +112,24 @@ function waitForCoverAnimation(animationName, fallbackMs, onDone) {
 
   bookCover.addEventListener('animationend', onAnimationEnd);
   setTimeout(finish, fallbackMs + 140);
+}
+
+if (pageCursor) {
+  pageCursor.classList.add('is-pencil');
+  document.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'touch') return;
+    setCursorPosition(event.clientX, event.clientY);
+    setCursorPencilState(true);
+  });
+
+  document.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch') return;
+    setCursorPencilState(true);
+  });
+
+  document.addEventListener('pointerup', () => {
+    setCursorPencilState(true);
+  });
 }
 
 function setActiveNav(target) {
