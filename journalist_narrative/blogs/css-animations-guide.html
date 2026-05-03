@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Art of CSS Animations - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+  <style>
+    /* Demo animation styles */
+    .animation-demo {
+      background: var(--paper-soft);
+      padding: 2rem;
+      border-radius: 8px;
+      margin: 2rem 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .demo-box {
+      width: 100px;
+      height: 100px;
+      background: var(--oxblood);
+      margin: 0 auto;
+      border-radius: 8px;
+    }
+
+    .demo-slide {
+      animation: demoSlide 2s ease-in-out infinite;
+    }
+
+    @keyframes demoSlide {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(100px); }
+    }
+
+    .demo-rotate {
+      animation: demoRotate 2s linear infinite;
+    }
+
+    @keyframes demoRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .demo-fade {
+      animation: demoFade 2s ease-in-out infinite;
+    }
+
+    @keyframes demoFade {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">The Art of CSS Animations</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>February 28, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>7 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">CSS</span>
+        <span class="blog-tag">Design</span>
+        <span class="blog-tag">Frontend</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>Introduction to CSS Animations</h2>
+      <p>CSS animations bring life to your web pages without requiring any JavaScript. They're smooth, performant, and provide an excellent user experience when used effectively. Whether you're creating subtle transitions or eye-catching effects, CSS has you covered.</p>
+
+      <h2>Transitions vs Animations</h2>
+      <p>There's an important distinction between CSS transitions and animations:</p>
+
+      <h3>Transitions</h3>
+      <p>Transitions smoothly change property values over time in response to an event:</p>
+      <pre><code>.button {
+  background: #007bff;
+  padding: 10px 20px;
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: #0056b3;
+}</code></pre>
+
+      <h3>Animations</h3>
+      <p>Animations use keyframes to define multiple steps in the animation sequence:</p>
+      <pre><code>@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(50px);
+  }
+  100% {
+    transform: translateX(100px);
+  }
+}
+
+.element {
+  animation: slide 2s ease-in-out infinite;
+}</code></pre>
+
+      <div class="animation-demo">
+        <p style="color: var(--ink-muted); margin-top: 0;">Example: Sliding animation</p>
+        <div class="demo-box demo-slide"></div>
+      </div>
+
+      <h2>Keyframes Explained</h2>
+      <p>Keyframes define what styles should be applied at different points in the animation. You can specify them using percentages or keywords (from/to):</p>
+      <pre><code>@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}</code></pre>
+
+      <h2>Animation Properties</h2>
+      <p>Control your animations with these properties:</p>
+      <ul>
+        <li><code>animation-name</code> - The name of the keyframes animation</li>
+        <li><code>animation-duration</code> - How long the animation takes to complete</li>
+        <li><code>animation-timing-function</code> - How the animation progresses (ease, linear, cubic-bezier)</li>
+        <li><code>animation-delay</code> - Delay before animation starts</li>
+        <li><code>animation-iteration-count</code> - Number of times to repeat (or infinite)</li>
+        <li><code>animation-direction</code> - Play forward, backward, or alternate</li>
+        <li><code>animation-fill-mode</code> - How styles are applied outside animation time</li>
+      </ul>
+
+      <div class="animation-demo">
+        <p style="color: var(--ink-muted); margin-top: 0;">Example: Rotating animation</p>
+        <div class="demo-box demo-rotate"></div>
+      </div>
+
+      <h2>Timing Functions</h2>
+      <p>Timing functions control the animation's acceleration and deceleration:</p>
+      <pre><code>/* Common timing functions */
+ease           /* Starts slow, fast in middle, ends slow */
+linear         /* Constant speed throughout */
+ease-in        /* Starts slow, accelerates */
+ease-out       /* Starts fast, decelerates */
+ease-in-out    /* Slow start and end */
+
+/* Custom timing */
+cubic-bezier(0.25, 0.1, 0.25, 1)</code></pre>
+
+      <div class="animation-demo">
+        <p style="color: var(--ink-muted); margin-top: 0;">Example: Fading animation</p>
+        <div class="demo-box demo-fade"></div>
+      </div>
+
+      <h2>Performance Tips</h2>
+      <p>Create smooth, performant animations by following these best practices:</p>
+      <ul>
+        <li><strong>Use transform and opacity:</strong> These properties are GPU-accelerated and perform best</li>
+        <li><strong>Avoid animating:</strong> width, height, left, right, top, bottom (use transform instead)</li>
+        <li><strong>Use will-change sparingly:</strong> Only on elements that are actually animated</li>
+        <li><strong>Test on mobile:</strong> Mobile devices have limited resources</li>
+        <li><strong>Reduce motion:</strong> Respect user's prefers-reduced-motion preference</li>
+      </ul>
+
+      <h2>Respecting User Preferences</h2>
+      <p>Always respect the user's animation preferences:</p>
+      <pre><code>@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}</code></pre>
+
+      <h2>Real-World Examples</h2>
+      <h3>Fade In on Load</h3>
+      <pre><code>@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+body {
+  animation: fadeIn 1s ease-out;
+}</code></pre>
+
+      <h3>Loading Spinner</h3>
+      <pre><code>@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}</code></pre>
+
+      <h3>Hover Effect</h3>
+      <pre><code>.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}</code></pre>
+
+      <h2>Conclusion</h2>
+      <p>CSS animations are a powerful tool for enhancing user experience. By understanding keyframes, timing functions, and performance best practices, you can create smooth, engaging animations that don't compromise performance.</p>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+  <script src="blog-animation.js"></script>
+</body>
+</html>

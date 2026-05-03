@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript Guide - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">TypeScript: JavaScript with Superpowers</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>May 4, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>10 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">TypeScript</span>
+        <span class="blog-tag">Programming</span>
+        <span class="blog-tag">Type Safety</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>What is TypeScript?</h2>
+      <p>TypeScript is a strongly-typed superset of JavaScript that compiles to plain JavaScript. It adds static type checking, interfaces, and other features that make code more robust, maintainable, and easier to debug.</p>
+
+      <h2>Core Features</h2>
+      <ul>
+        <li><strong>Static Types:</strong> Catch errors at compile-time instead of runtime</li>
+        <li><strong>Interfaces:</strong> Define contracts for object structures</li>
+        <li><strong>Classes:</strong> Full object-oriented programming support</li>
+        <li><strong>Generics:</strong> Write reusable, flexible components</li>
+        <li><strong>Decorators:</strong> Add metadata and modify classes and methods</li>
+      </ul>
+
+      <h2>Type Annotations</h2>
+      <p>TypeScript allows you to specify types for variables, parameters, and return values:</p>
+      <pre><code>// Variable Types
+const name: string = 'John';
+const age: number = 30;
+const active: boolean = true;
+
+// Function Types
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+// Union Types
+let value: string | number;
+value = 'hello'; // OK
+value = 42;      // OK</code></pre>
+
+      <h2>Interfaces</h2>
+      <p>Define the structure of objects with interfaces:</p>
+      <pre><code>interface User {
+  id: number;
+  name: string;
+  email: string;
+  isActive?: boolean; // Optional property
+}
+
+const user: User = {
+  id: 1,
+  name: 'John',
+  email: 'john@example.com',
+  isActive: true
+};</code></pre>
+
+      <h2>Classes & Inheritance</h2>
+      <pre><code>class Animal {
+  name: string;
+  
+  constructor(name: string) {
+    this.name = name;
+  }
+  
+  speak() {
+    console.log(`${this.name} makes a sound`);
+  }
+}
+
+class Dog extends Animal {
+  speak() {
+    console.log(`${this.name} barks`);
+  }
+}</code></pre>
+
+      <h2>Generics</h2>
+      <p>Create flexible, reusable components that work with multiple types:</p>
+      <pre><code>// Generic Function
+function identity&lt;T&gt;(arg: T): T {
+  return arg;
+}
+
+// Generic Array
+const items: Array&lt;string&gt; = ['a', 'b', 'c'];
+
+// Generic Interface
+interface Container&lt;T&gt; {
+  value: T;
+  getValue(): T;
+}</code></pre>
+
+      <h2>Why Use TypeScript?</h2>
+      <blockquote>
+        "TypeScript brings the benefits of static typing to JavaScript. Better IDE support, fewer runtime errors, and code that's easier to maintain and refactor."
+      </blockquote>
+
+      <h2>Benefits in Teams</h2>
+      <ul>
+        <li><strong>Documentation:</strong> Types serve as self-documenting code</li>
+        <li><strong>IDE Support:</strong> Better autocomplete and refactoring</li>
+        <li><strong>Error Prevention:</strong> Catch mistakes before runtime</li>
+        <li><strong>Collaboration:</strong> Clear contracts between modules</li>
+        <li><strong>Maintenance:</strong> Easier to understand code intent</li>
+      </ul>
+
+      <h2>Advanced Type Features</h2>
+      <pre><code>// Conditional types
+type IsString&lt;T&gt; = T extends string ? true : false;
+
+// Utility types
+type Readonly&lt;T&gt; = { readonly [K in keyof T]: T[K] };
+type Partial&lt;T&gt; = { [K in keyof T]?: T[K] };
+
+// Discriminated unions
+type Result&lt;T&gt; = 
+  | { success: true; value: T }
+  | { success: false; error: string };</code></pre>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li><strong>Large Codebases:</strong> Catch type errors before production</li>
+        <li><strong>Team Projects:</strong> Self-documenting code through types</li>
+        <li><strong>APIs &amp; Libraries:</strong> Publish type-safe packages</li>
+        <li><strong>Full-Stack Development:</strong> Share types between client and server</li>
+        <li><strong>Long-term Maintenance:</strong> Easier refactoring and updates</li>
+      </ul>
+
+      <h2>Decorators &amp; Metadata</h2>
+      <pre><code>// Using decorators (with experimental flag)
+@sealed
+class User {
+  @validate
+  name: string;
+}
+
+function sealed(target: Function) {
+  Object.seal(target);
+}</code></pre>
+
+      <h2>Testing &amp; Quality</h2>
+      <pre><code>// Jest with TypeScript
+describe('UserService', () => {
+  it('creates user correctly', () => {
+    const user: User = { 
+      id: 1, 
+      name: 'Alice' 
+    };
+    expect(user.name).toBe('Alice');
+  });
+});</code></pre>
+
+      <h2>Learning Resources</h2>
+      <ul>
+        <li><strong>TypeScript Handbook</strong> - Official comprehensive guide</li>
+        <li><strong>TypeScript Deep Dive</strong> - Free online book</li>
+        <li><strong>DefinitelyTyped</strong> - Type definitions repository</li>
+        <li><strong>TypeScript Playground</strong> - Experiment online</li>
+      </ul>
+
+      <h2>Why TypeScript Matters</h2>
+      <blockquote>
+        "TypeScript brings industrial-strength type checking to JavaScript, enabling confident refactoring and earlier error detection in complex applications."
+      </blockquote>
+
+      <h2>Conclusion</h2>
+      <p>TypeScript is increasingly becoming the standard for large-scale JavaScript projects. Whether you're building a single-page application or a full-stack system, TypeScript's type safety and developer experience benefits make it worth the learning investment. Start with the basics, gradually master advanced features, and leverage TypeScript to build more reliable, maintainable applications.</p>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+    <script src="blog-cursor.js"></script>
+  <script src="blog-animation.js"></script>
+</body>
+</html>

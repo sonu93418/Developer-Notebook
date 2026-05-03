@@ -1,0 +1,193 @@
+<!-- Quick Reference: How to Add a Blog Post -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blog Post Quick Template</title>
+</head>
+<body>
+
+<!-- COPY THIS ENTIRE FILE AND MODIFY THE CONTENT -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOUR BLOG TITLE HERE - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <!-- UPDATE: Title -->
+      <h1 class="blog-post-title">YOUR BLOG POST TITLE</h1>
+      
+      <div class="blog-post-meta">
+        <!-- UPDATE: Date, Author, Read Time -->
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>May 4, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>Your Name</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>5 min read</span>
+        </div>
+      </div>
+      
+      <!-- UPDATE: Tags -->
+      <div class="blog-post-tags">
+        <span class="blog-tag">Tag 1</span>
+        <span class="blog-tag">Tag 2</span>
+        <span class="blog-tag">Tag 3</span>
+      </div>
+    </div>
+
+    <!-- WRITE YOUR BLOG CONTENT HERE -->
+    <div class="blog-post-content">
+      <h2>Introduction</h2>
+      <p>Start your blog post with an introduction paragraph...</p>
+
+      <h2>Main Section</h2>
+      <p>Your main content goes here. You can use:</p>
+      
+      <!-- Bullet Points -->
+      <ul>
+        <li>Bullet point 1</li>
+        <li>Bullet point 2</li>
+        <li>Bullet point 3</li>
+      </ul>
+
+      <h3>Subsection</h3>
+      <p>Add subsections with h3 tags.</p>
+
+      <!-- Numbered List -->
+      <ol>
+        <li>First point</li>
+        <li>Second point</li>
+        <li>Third point</li>
+      </ol>
+
+      <!-- Code Example -->
+      <h3>Code Example</h3>
+      <p>Use <code>inline code</code> for small snippets.</p>
+      
+      <p>For larger code blocks, use:</p>
+      <pre><code>// Your code here
+function example() {
+  return "Hello World";
+}</code></pre>
+
+      <!-- Quote -->
+      <blockquote>
+        "This is a quote. Use for important statements or citations."
+      </blockquote>
+
+      <!-- Images -->
+      <h3>Adding Images</h3>
+      <p>Use this syntax for images:</p>
+      <pre><code>&lt;img src="path/to/image.jpg" alt="Description"&gt;</code></pre>
+
+      <h2>Conclusion</h2>
+      <p>End your blog post with a conclusion or call to action.</p>
+    </div>
+
+    <!-- Navigation - Keep as is -->
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+  <script src="blog-animation.js"></script>
+</body>
+</html>
+
+<!-- STEPS TO ADD THIS BLOG POST:
+
+1. SAVE THIS FILE with a unique name:
+   Example: "my-awesome-post.html"
+
+2. EDIT THE CONTENT:
+   - Change title in <title> and <h1>
+   - Update date, author, read time
+   - Add your tags
+   - Write your blog content
+
+3. UPDATE blogs/index.html:
+   Find the `blogs` array and add:
+   
+   {
+     id: 'my-awesome-post',
+     title: 'My Awesome Post',
+     date: 'May 4, 2026',
+     excerpt: 'Brief description shown in preview...',
+     tags: ['Tag1', 'Tag2'],
+     author: 'Your Name'
+   }
+
+4. SAVE AND TEST:
+   - Open blogs/index.html in browser
+   - Click your blog post
+   - Check animations and styling
+
+5. TROUBLESHOOT:
+   - Is the file in the blogs/ folder? ✓
+   - Does the ID match in index.html? ✓
+   - Are the CSS files linked? ✓
+   - Check browser console for errors ✓
+
+CONTENT ELEMENTS REFERENCE:
+
+Headings:
+  <h2>Main Section</h2>
+  <h3>Subsection</h3>
+
+Text:
+  <p>Paragraph</p>
+
+Lists:
+  <ul><li>Bullet</li></ul>
+  <ol><li>Numbered</li></ol>
+
+Code:
+  <code>inline</code>
+  <pre><code>block code</code></pre>
+
+Quotes:
+  <blockquote>Quote text</blockquote>
+
+Images:
+  <img src="path" alt="description">
+
+ANIMATION SUPPORT:
+All blog posts automatically get:
+✓ Fade-in entrance animation
+✓ Slide-left exit animation
+✓ Staggered content animation
+✓ Smooth page scrolling
+✓ Keyboard navigation
+
+No additional code needed - just write!
+
+TIPS:
+- Keep paragraphs concise (2-3 sentences)
+- Use code blocks for complex examples
+- Add images to break up text
+- Use blockquotes for important ideas
+- Proofread before publishing
+- Test on mobile devices
+
+Need help? See README.md for full guide!
+-->
+
+</body>
+</html>

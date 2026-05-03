@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostgreSQL Guide - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">PostgreSQL: Advanced Relational Database</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>May 4, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>8 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">PostgreSQL</span>
+        <span class="blog-tag">Database</span>
+        <span class="blog-tag">SQL</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>What is PostgreSQL?</h2>
+      <p>PostgreSQL is a powerful, open-source relational database management system (RDBMS) known for reliability, feature richness, and performance. With advanced data types, JSON support, and full-text search capabilities, PostgreSQL is an excellent choice for modern applications.</p>
+
+      <h2>Core Features</h2>
+      <ul>
+        <li><strong>ACID Compliance:</strong> Ensures data integrity and reliability</li>
+        <li><strong>Advanced Data Types:</strong> JSON, Arrays, Custom types, and more</li>
+        <li><strong>Full-Text Search:</strong> Built-in text searching capabilities</li>
+        <li><strong>JSON Support:</strong> Store and query JSON data natively</li>
+        <li><strong>Extensibility:</strong> Create custom functions and extensions</li>
+      </ul>
+
+      <h2>Basic SQL Queries</h2>
+      <pre><code>-- Create table
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE,
+  age INT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Insert data
+INSERT INTO users (name, email, age)
+VALUES ('John Doe', 'john@example.com', 30);
+
+-- Select queries
+SELECT * FROM users;
+SELECT name, email FROM users WHERE age > 25;
+
+-- Update data
+UPDATE users SET age = 31 WHERE id = 1;
+
+-- Delete data
+DELETE FROM users WHERE id = 1;</code></pre>
+
+      <h2>Joins and Relationships</h2>
+      <pre><code>-- Create related table
+CREATE TABLE posts (
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id),
+  title VARCHAR(200),
+  content TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Join query
+SELECT users.name, posts.title
+FROM users
+INNER JOIN posts ON users.id = posts.user_id
+WHERE users.id = 1;
+
+-- Left join to include users without posts
+SELECT users.name, posts.title
+FROM users
+LEFT JOIN posts ON users.id = posts.user_id;</code></pre>
+
+      <h2>Advanced Features</h2>
+
+      <h3>Aggregation and Grouping</h3>
+      <pre><code>-- Count posts per user
+SELECT users.name, COUNT(posts.id) as post_count
+FROM users
+LEFT JOIN posts ON users.id = posts.user_id
+GROUP BY users.id, users.name
+ORDER BY post_count DESC;</code></pre>
+
+      <h3>JSON Support</h3>
+      <pre><code>-- Store JSON data
+CREATE TABLE profiles (
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id),
+  metadata JSONB
+);
+
+-- Query JSON data
+SELECT metadata->>'bio' as bio
+FROM profiles
+WHERE metadata @> '{"verified": true}';</code></pre>
+
+      <h3>Indexes for Performance</h3>
+      <pre><code>-- Create index
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_posts_user_id ON posts(user_id);
+
+-- Full-text search index
+CREATE INDEX idx_posts_content ON posts 
+USING GIN(to_tsvector('english', content));</code></pre>
+
+      <h2>Transaction Example</h2>
+      <pre><code>BEGIN TRANSACTION;
+
+UPDATE users SET age = 31 WHERE id = 1;
+UPDATE users SET age = 29 WHERE id = 2;
+
+-- Commit if successful, or rollback on error
+COMMIT;</code></pre>
+
+      <h2>Window Functions</h2>
+      <pre><code>-- Calculate running totals
+SELECT 
+  employee_id,
+  salary,
+  SUM(salary) OVER (
+    ORDER BY employee_id 
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) as running_total
+FROM employees;</code></pre>
+
+      <h2>Common Table Expressions (CTE)</h2>
+      <pre><code>-- Recursive query example
+WITH RECURSIVE numbers(n) AS (
+  SELECT 1
+  UNION ALL
+  SELECT n + 1 FROM numbers WHERE n &lt; 100
+)
+SELECT * FROM numbers;</code></pre>
+
+      <h2>Performance Tuning</h2>
+      <pre><code>-- Explain query execution plan
+EXPLAIN ANALYZE
+SELECT users.name, COUNT(posts.id) as post_count
+FROM users
+LEFT JOIN posts ON users.id = posts.user_id
+GROUP BY users.id, users.name;
+
+-- Vacuum to reclaim space
+VACUUM ANALYZE;</code></pre>
+
+      <h2>Backup &amp; Recovery</h2>
+      <pre><code>-- Backup database
+pg_dump mydb &gt; mydb_backup.sql
+
+-- Restore database
+psql mydb &lt; mydb_backup.sql
+
+-- Backup entire cluster
+pg_dumpall &gt; all_databases.sql</code></pre>
+
+      <h2>Popular Tools &amp; Drivers</h2>
+      <ul>
+        <li><strong>psycopg2:</strong> Python PostgreSQL adapter</li>
+        <li><strong>pg-promise:</strong> Node.js PostgreSQL promise wrapper</li>
+        <li><strong>TypeORM:</strong> Node.js/TypeScript ORM</li>
+        <li><strong>SQLAlchemy:</strong> Python SQL toolkit and ORM</li>
+        <li><strong>pgAdmin:</strong> Web-based administration tool</li>
+        <li><strong>DBeaver:</strong> Universal database tool</li>
+      </ul>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li><strong>Production Web Applications:</strong> Reliable backend database</li>
+        <li><strong>Analytics Platforms:</strong> Complex aggregations and reporting</li>
+        <li><strong>Time-Series Data:</strong> Sensor data, stock prices, metrics</li>
+        <li><strong>Document Storage:</strong> JSON/JSONB for semi-structured data</li>
+        <li><strong>Full-Text Search:</strong> Search functionality without separate tools</li>
+        <li><strong>Geospatial Applications:</strong> PostGIS extension for location data</li>
+      </ul>
+
+      <h2>Advanced Features</h2>
+      <ul>
+        <li><strong>Extensions:</strong> PostGIS for spatial data, UUID-ossp for unique identifiers</li>
+        <li><strong>Custom Types:</strong> Define domain-specific data types</li>
+        <li><strong>Stored Procedures:</strong> PL/pgSQL for server-side logic</li>
+        <li><strong>Triggers:</strong> Automatic actions on data changes</li>
+        <li><strong>Array Types:</strong> Store collections within columns</li>
+      </ul>
+
+      <h2>Best Practices</h2>
+      <blockquote>
+        "PostgreSQL is more than just a database. It's a platform for building reliable, scalable applications with complex data requirements."
+      </blockquote>
+
+      <ul>
+        <li>Use constraints to maintain data integrity</li>
+        <li>Create indexes on frequently queried columns</li>
+        <li>Use parameterized queries to prevent SQL injection</li>
+        <li>Regular backups for disaster recovery</li>
+        <li>Monitor query performance with EXPLAIN ANALYZE</li>
+        <li>Use connection pooling for production applications</li>
+        <li>Follow normalized schema design</li>
+      </ul>
+
+      <h2>Learning Resources</h2>
+      <ul>
+        <li><strong>PostgreSQL Official Docs</strong> - Comprehensive manual</li>
+        <li><strong>PostgreSQL Tutorial</strong> - Official interactive tutorial</li>
+        <li><strong>Use the Index, Luke!</strong> - Free online book on database indexing</li>
+        <li><strong>PostgreSQL Exercises</strong> - Practice SQL with interactive problems</li>
+      </ul>
+
+      <h2>Conclusion</h2>
+      <p>PostgreSQL is a robust, feature-rich database system that powers countless enterprise applications and modern startups. Whether you need a reliable backend for a web application, a platform for complex analytics, or advanced features like JSON support and full-text search, PostgreSQL provides industrial-strength reliability and performance. Master SQL fundamentals, understand indexing and query optimization, and leverage PostgreSQL's advanced features to build scalable, maintainable applications.</p>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+    <script src="blog-cursor.js"></script>
+  <script src="blog-animation.js"></script>
+</body>
+</html>

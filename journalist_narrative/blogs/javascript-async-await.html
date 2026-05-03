@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mastering Async/Await in JavaScript - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">Mastering Async/Await in JavaScript</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>March 10, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>10 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">JavaScript</span>
+        <span class="blog-tag">Programming</span>
+        <span class="blog-tag">Advanced</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>What is Asynchronous Programming?</h2>
+      <p>Asynchronous programming allows your code to perform long-running operations without blocking the main thread. This is essential for modern web applications that need to fetch data, read files, or perform other time-consuming tasks.</p>
+
+      <h2>The Evolution: Callbacks, Promises, and Async/Await</h2>
+      <p>There are three main approaches to handling asynchronous code in JavaScript, each representing an improvement over the previous:</p>
+
+      <h3>Callbacks (The Old Way)</h3>
+      <p>Callbacks were the original way to handle asynchronous operations, but they can lead to "callback hell" when you have multiple nested callbacks:</p>
+      <pre><code>function fetchUserData(userId, callback) {
+  setTimeout(() => {
+    callback({ id: userId, name: 'John' });
+  }, 1000);
+}
+
+// Usage
+fetchUserData(1, (user) => {
+  console.log('User:', user);
+});</code></pre>
+
+      <h3>Promises (Better)</h3>
+      <p>Promises provide a cleaner way to handle asynchronous operations and make it easier to chain multiple operations:</p>
+      <pre><code>const fetchUserPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve({ id: 1, name: 'John' });
+  }, 1000);
+});
+
+// Usage
+fetchUserPromise
+  .then(user => console.log('User:', user))
+  .catch(error => console.error('Error:', error));</code></pre>
+
+      <h3>Async/Await (The Best)</h3>
+      <p>Async/await makes asynchronous code look and feel like synchronous code, making it much easier to read and understand:</p>
+      <pre><code>async function getUserData(userId) {
+  try {
+    const response = await fetch(\`/api/users/\${userId}\`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+  }
+}</code></pre>
+
+      <h2>Key Concepts</h2>
+      <h3>The async Keyword</h3>
+      <p>The <code>async</code> keyword declares that a function is asynchronous. Every async function returns a Promise:</p>
+      <pre><code>async function greeting() {
+  return 'Hello!';
+}
+
+// This is equivalent to:
+function greeting() {
+  return Promise.resolve('Hello!');
+}</code></pre>
+
+      <h3>The await Keyword</h3>
+      <p>The <code>await</code> keyword pauses execution until a promise resolves. It can only be used inside an async function:</p>
+      <pre><code>async function fetchAndPrint() {
+  const data = await fetch('/api/data');
+  console.log(data);
+}</code></pre>
+
+      <h3>Error Handling with try/catch</h3>
+      <p>Use try/catch blocks to handle errors gracefully:</p>
+      <pre><code>async function safeOperation() {
+  try {
+    const result = await riskyOperation();
+    console.log('Success:', result);
+  } catch (error) {
+    console.error('Error:', error.message);
+  } finally {
+    console.log('Cleanup');
+  }
+}</code></pre>
+
+      <h2>Real-World Example</h2>
+      <pre><code>async function loadUserProfile(userId) {
+  try {
+    // Fetch user data
+    const userResponse = await fetch(\`/api/users/\${userId}\`);
+    const user = await userResponse.json();
+
+    // Fetch user's posts
+    const postsResponse = await fetch(\`/api/users/\${userId}/posts\`);
+    const posts = await postsResponse.json();
+
+    // Update UI
+    displayUserProfile(user, posts);
+  } catch (error) {
+    console.error('Failed to load profile:', error);
+    showErrorMessage('Could not load user profile');
+  }
+}
+
+// Call the function
+loadUserProfile(123);</code></pre>
+
+      <h2>Best Practices</h2>
+      <ul>
+        <li>Always use try/catch to handle errors</li>
+        <li>Don't forget to await promises</li>
+        <li>Use Promise.all() for parallel operations</li>
+        <li>Avoid mixing callbacks and async/await</li>
+        <li>Use async/await for better code readability</li>
+      </ul>
+
+      <h2>Common Pitfalls</h2>
+      <blockquote>
+        "A common mistake is forgetting to await a promise, which causes the function to return before the async operation completes."
+      </blockquote>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+  <script src="blog-animation.js"></script>
+</body>
+</html>

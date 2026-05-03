@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS Guide - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">Tailwind CSS: Utility-First Styling</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>May 4, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>8 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">Tailwind CSS</span>
+        <span class="blog-tag">CSS</span>
+        <span class="blog-tag">Styling</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>What is Tailwind CSS?</h2>
+      <p>Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces. Instead of writing custom CSS, you use pre-defined utility classes directly in your HTML to build components and layouts. This approach leads to faster development and more maintainable code.</p>
+
+      <h2>Why Tailwind?</h2>
+      <ul>
+        <li><strong>Utility-First:</strong> Build designs without leaving your HTML</li>
+        <li><strong>Fast Development:</strong> No need to name classes or write custom CSS</li>
+        <li><strong>Consistency:</strong> Built-in design system with colors, spacing, fonts</li>
+        <li><strong>Responsive:</strong> Mobile-first breakpoints built-in</li>
+        <li><strong>Customizable:</strong> Extend or override the default theme</li>
+      </ul>
+
+      <h2>Installation</h2>
+      <pre><code>// Using npm
+npm install -D tailwindcss postcss autoprefixer
+
+// Generate config files
+npx tailwindcss init -p
+
+// In tailwind.config.js
+module.exports = {
+  content: [
+    "./src/**/*.{html,js}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}</code></pre>
+
+      <h2>Basic Utility Classes</h2>
+      <pre><code>&lt;!-- Padding and Margin --&gt;
+&lt;div class="p-4"&gt;Content with padding&lt;/div&gt;
+&lt;div class="m-2"&gt;Content with margin&lt;/div&gt;
+
+&lt;!-- Colors --&gt;
+&lt;div class="text-blue-500 bg-gray-100"&gt;
+  Blue text on gray background
+&lt;/div&gt;
+
+&lt;!-- Typography --&gt;
+&lt;h1 class="text-3xl font-bold"&gt;Heading&lt;/h1&gt;
+&lt;p class="text-gray-600"&gt;Subtext&lt;/p&gt;
+
+&lt;!-- Borders and Shadows --&gt;
+&lt;div class="border-2 border-blue-500 rounded-lg shadow-lg"&gt;
+  Card with border and shadow
+&lt;/div&gt;</code></pre>
+
+      <h2>Responsive Design</h2>
+      <pre><code>&lt;!-- Mobile-first approach --&gt;
+&lt;div class="text-sm md:text-base lg:text-lg"&gt;
+  Responsive text
+&lt;/div&gt;
+
+&lt;!-- Grid layout responsive --&gt;
+&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"&gt;
+  &lt;div&gt;Column 1&lt;/div&gt;
+  &lt;div&gt;Column 2&lt;/div&gt;
+  &lt;div&gt;Column 3&lt;/div&gt;
+  &lt;div&gt;Column 4&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+      <h2>Flexbox and Layout</h2>
+      <pre><code>&lt;!-- Flexbox centering --&gt;
+&lt;div class="flex items-center justify-center h-screen"&gt;
+  Centered content
+&lt;/div&gt;
+
+&lt;!-- Navigation bar --&gt;
+&lt;nav class="flex justify-between items-center p-4 bg-white shadow"&gt;
+  &lt;div class="font-bold"&gt;Logo&lt;/div&gt;
+  &lt;div class="flex gap-4"&gt;
+    &lt;a href="#" class="hover:text-blue-500"&gt;Home&lt;/a&gt;
+    &lt;a href="#" class="hover:text-blue-500"&gt;About&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+
+      <h2>Building Components</h2>
+      <pre><code>&lt;!-- Button component --&gt;
+&lt;button class="px-4 py-2 bg-blue-500 text-white rounded-lg 
+  hover:bg-blue-600 transition-colors"&gt;
+  Click me
+&lt;/button&gt;
+
+&lt;!-- Card component --&gt;
+&lt;div class="bg-white p-6 rounded-lg shadow-lg"&gt;
+  &lt;h3 class="text-xl font-bold mb-2"&gt;Card Title&lt;/h3&gt;
+  &lt;p class="text-gray-600"&gt;Card description&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+      <h2>Customization</h2>
+      <pre><code>// tailwind.config.js
+module.exports = {
+  theme: {
+    colors: {
+      'brand-blue': '#3b82f6',
+      'brand-red': '#ef4444',
+    },
+    spacing: {
+      '128': '32rem',
+    },
+    fontFamily: {
+      'custom': ['MyFont', 'sans-serif'],
+    },
+  },
+}</code></pre>
+
+      <h2>Advanced Features</h2>
+      <ul>
+        <li><strong>@apply:</strong> Extract utility classes into custom components</li>
+        <li><strong>Dark Mode:</strong> Built-in dark mode support with dark: prefix</li>
+        <li><strong>Animations:</strong> Pre-built animations like pulse, bounce, spin</li>
+        <li><strong>Plugins:</strong> Extend Tailwind with custom functionality</li>
+      </ul>
+
+      <h2>Dark Mode Example</h2>
+      <pre><code>&lt;div class="bg-white dark:bg-gray-900 text-black dark:text-white"&gt;
+  Content that changes with dark mode
+&lt;/div&gt;
+
+&lt;!-- Enable dark mode in tailwind.config.js --&gt;
+module.exports = {
+  darkMode: 'class', // or 'media'
+  theme: { /* ... */ }
+}</code></pre>
+
+      <h2>Creating Reusable Components</h2>
+      <pre><code>/* Using @apply in CSS */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-500 text-white rounded-lg;
+    @apply hover:bg-blue-600 transition-colors;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-lg;
+  }
+}
+
+/* In HTML */
+&lt;button class="btn-primary"&gt;Click me&lt;/button&gt;
+&lt;div class="card"&gt;Card content&lt;/div&gt;</code></pre>
+
+      <h2>Plugin Development</h2>
+      <pre><code>// tailwind.config.js
+module.exports = {
+  plugins: [
+    function({ addComponents, theme }) {
+      addComponents({
+        '.btn-custom': {
+          padding: theme('spacing.3'),
+          borderRadius: theme('borderRadius.lg'),
+          fontWeight: theme('fontWeight.bold'),
+        },
+      })
+    }
+  ]
+}</code></pre>
+
+      <h2>State Variants</h2>
+      <pre><code>&lt;!-- Hover, focus, active states --&gt;
+&lt;button class="bg-blue-500 hover:bg-blue-600 focus:outline-none 
+  focus:ring-2 active:scale-95"&gt;
+  Interactive Button
+&lt;/button&gt;
+
+&lt;!-- Group hover for parent-child interactions --&gt;
+&lt;div class="group border hover:bg-blue-100"&gt;
+  &lt;h3 class="group-hover:text-blue-600"&gt;Title&lt;/h3&gt;
+  &lt;p class="group-hover:text-blue-500"&gt;Subtitle&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+      <h2>Common Patterns &amp; Components</h2>
+      <ul>
+        <li><strong>Hero Section:</strong> Large eye-catching header</li>
+        <li><strong>Navigation Bar:</strong> Responsive menu with mobile hamburger</li>
+        <li><strong>Card Layouts:</strong> Grid-based product/article displays</li>
+        <li><strong>Forms:</strong> Styled inputs, labels, validation states</li>
+        <li><strong>Modals &amp; Overlays:</strong> Popups and dialogs</li>
+        <li><strong>Pagination:</strong> Navigation through data pages</li>
+      </ul>
+
+      <h2>Performance Optimization</h2>
+      <pre><code>// tailwind.config.js - Purge unused CSS
+module.exports = {
+  content: [
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: { /* ... */ },
+}
+
+// Production build
+npm run build  // Automatically purges unused styles</code></pre>
+
+      <h2>Integration with Frameworks</h2>
+      <ul>
+        <li><strong>React:</strong> Perfect with JSX for component styling</li>
+        <li><strong>Vue:</strong> Works seamlessly with Vue templates</li>
+        <li><strong>Next.js:</strong> Built-in Tailwind support</li>
+        <li><strong>Angular:</strong> Compatible with Angular projects</li>
+        <li><strong>Static HTML:</strong> Works with any HTML file</li>
+      </ul>
+
+      <h2>Design System Extension</h2>
+      <pre><code>// tailwind.config.js - Extend with brand colors
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'brand-primary': '#6366f1',
+        'brand-secondary': '#ec4899',
+      },
+      spacing: {
+        '128': '32rem',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '65ch',
+          },
+        },
+      },
+    },
+  },
+}</code></pre>
+
+      <h2>Best Practices</h2>
+      <blockquote>
+        "Tailwind CSS empowers developers to build beautiful, responsive interfaces faster than ever. Learn it once, and you'll wonder how you ever built sites without it."
+      </blockquote>
+
+      <ul>
+        <li>Use responsive modifiers for mobile-first design (sm:, md:, lg:, xl:, 2xl:)</li>
+        <li>Leverage the @apply directive to avoid repetitive classes</li>
+        <li>Customize the theme to match your brand identity</li>
+        <li>Extract components using @layer components for reusability</li>
+        <li>Purge unused CSS in production for optimal bundle size</li>
+        <li>Use state variants (hover:, focus:, active:) for interactivity</li>
+        <li>Maintain a consistent design system across your project</li>
+      </ul>
+
+      <h2>Learning Resources</h2>
+      <ul>
+        <li><strong>Tailwind CSS Docs</strong> - Official documentation and API</li>
+        <li><strong>Tailwind UI</strong> - Pre-built component library</li>
+        <li><strong>Headless UI</strong> - Unstyled accessible components</li>
+        <li><strong>Tailwind CSS IntelliSense</strong> - VS Code extension</li>
+        <li><strong>Tailwind Play</strong> - Online playground to experiment</li>
+      </ul>
+
+      <h2>Conclusion</h2>
+      <p>Tailwind CSS has revolutionized how developers approach styling in modern web development. By providing a comprehensive set of utility classes, Tailwind enables rapid prototyping and development while maintaining consistency and performance. Whether you're building a startup MVP, a complex enterprise application, or a portfolio website, Tailwind CSS provides the flexibility, scalability, and developer experience needed for professional web development. Master utility-first CSS, customize your design system, and build stunning interfaces with confidence!</p>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+    <script src="blog-cursor.js"></script>
+  <script src="blog-animation.js"></script>
+</body>
+</html>

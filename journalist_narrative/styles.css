@@ -586,7 +586,7 @@ body {
   pointer-events: none;
   z-index: 3;
   display: grid;
-  grid-template-columns: minmax(210px, 1fr) min(540px, 92vw) minmax(210px, 1fr);
+  grid-template-columns: minmax(150px, 1fr) min(540px, 92vw) minmax(150px, 1fr);
   column-gap: 1.6rem;
   row-gap: 0.6rem;
   align-items: start;
@@ -1158,9 +1158,13 @@ body {
 }
 
 @media (max-width: 1280px) {
-  .decor-left .work-frame,
-  .decor-right .game-frame {
+  .decor-left .work-frame {
     display: none;
+  }
+
+  .decor-right .game-frame {
+    width: 150px;
+    margin-top: 0.55rem;
   }
 }
 
@@ -2049,7 +2053,9 @@ body {
 
 @media (max-width: 920px) {
   .cover-decor {
-    display: none;
+    grid-template-columns: minmax(112px, 0.82fr) minmax(0, 1fr) minmax(112px, 0.82fr);
+    column-gap: 0.9rem;
+    padding: 1rem 1rem 1.2rem;
   }
 
   .book-top-watch {
@@ -2062,6 +2068,35 @@ body {
 
   .book-view {
     grid-template-columns: clamp(150px, 17vw, 185px) minmax(0, 1fr);
+  }
+
+  .cover-decor .cover-sticky {
+    max-width: 160px;
+    font-size: 1.2rem;
+  }
+
+  .cover-decor .cover-coffee-frame,
+  .cover-decor .cover-photo,
+  .cover-decor .desk-frame,
+  .cover-decor .cover-pinboard {
+    width: clamp(118px, 15vw, 150px);
+  }
+
+  .cover-decor .cover-terminal,
+  .cover-decor .cover-keycaps,
+  .cover-decor .cover-tape {
+    font-size: 0.58rem;
+  }
+
+  .decor-right .game-frame {
+    width: clamp(118px, 15vw, 146px);
+    margin-top: 0.45rem;
+  }
+
+  .decor-right .cover-photo figcaption,
+  .cover-coffee-frame figcaption,
+  .desk-frame figcaption {
+    font-size: 1.15rem;
   }
 
   .sidebar {

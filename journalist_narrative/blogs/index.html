@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Archive - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+  <style>
+    .blog-archive {
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .blog-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .blog-header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Newsreader", serif;
+    }
+
+    .blog-header p {
+      color: var(--ink-muted);
+      margin-top: 0.5rem;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .blog-card {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(31, 25, 20, 0.1);
+      text-decoration: none;
+      display: block;
+      color: var(--ink);
+    }
+
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: var(--oxblood);
+    }
+
+    .blog-card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      font-family: "Newsreader", serif;
+    }
+
+    .blog-card-date {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 1rem;
+    }
+
+    .blog-card-excerpt {
+      font-size: 0.95rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .blog-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .blog-tag {
+      display: inline-block;
+      background: var(--note);
+      color: var(--ink);
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--paper-soft);
+      border: 2px solid var(--line);
+      color: var(--ink);
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .back-button:hover {
+      background: var(--paper-dark);
+      border-color: var(--oxblood);
+    }
+
+    @media (max-width: 768px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .blog-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blog-archive">
+    <button class="back-button" data-back-to-main>← Back to Journal</button>
+    
+    <div class="blog-header">
+      <h1>Blog Archive</h1>
+      <p>A collection of my thoughts, experiments, and explorations</p>
+    </div>
+
+    <div class="blog-grid" id="blogGrid">
+      <!-- Blog cards will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <script src="blog-cursor.js"></script>
+  <script>
+    // Blog data structure
+    const blogs = [
+      {
+        id: 'getting-started-web-dev',
+        title: 'Getting Started with Web Development',
+        date: 'March 15, 2026',
+        excerpt: 'An introductory guide to starting your journey in web development. Learn the fundamentals and best practices.',
+        tags: ['Web Dev', 'Tutorial', 'Beginner'],
+        author: 'The Developer'
+      },
+      {
+        id: 'javascript-async-await',
+        title: 'Mastering Async/Await in JavaScript',
+        date: 'March 10, 2026',
+        excerpt: 'Deep dive into asynchronous programming with async/await patterns, error handling, and real-world examples.',
+        tags: ['JavaScript', 'Programming', 'Advanced'],
+        author: 'The Developer'
+      },
+      {
+        id: 'css-animations-guide',
+        title: 'The Art of CSS Animations',
+        date: 'February 28, 2026',
+        excerpt: 'Learn how to create smooth and performant animations using CSS, transitions, and keyframes.',
+        tags: ['CSS', 'Design', 'Frontend'],
+        author: 'The Developer'
+      },
+      {
+        id: 'building-apis',
+        title: 'Building RESTful APIs',
+        date: 'February 15, 2026',
+        excerpt: 'Complete guide to designing and building RESTful APIs with proper structure and best practices.',
+        tags: ['API', 'Backend', 'Architecture'],
+        author: 'The Developer'
+      }
+    ];
+
+    // Initialize blog grid
+    function initializeBlogGrid() {
+      const blogGrid = document.getElementById('blogGrid');
+      blogGrid.innerHTML = blogs.map(blog => `
+        <a href="${blog.id}.html" class="blog-card" data-blog-id="${blog.id}">
+          <h3 class="blog-card-title">${blog.title}</h3>
+          <div class="blog-card-date">${blog.date}</div>
+          <p class="blog-card-excerpt">${blog.excerpt}</p>
+          <div class="blog-card-tags">
+            ${blog.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('')}
+          </div>
+        </a>
+      `).join('');
+    }
+
+    // Back button functionality
+    document.querySelector('[data-back-to-main]').addEventListener('click', () => {
+      window.location.href = '../index.html';
+    });
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', initializeBlogGrid);
+  </script>
+</body>
+</html>

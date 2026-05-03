@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Guide - The Scribbler's Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Caveat:wght@400;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Orbitron:wght@500;700&family=Permanent+Marker&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="blog-styles.css">
+</head>
+<body>
+  <div class="blog-post-container">
+    <div class="blog-post-header">
+      <h1 class="blog-post-title">React: Building Interactive UIs</h1>
+      <div class="blog-post-meta">
+        <div class="blog-post-meta-item">
+          <span>📅</span>
+          <span>May 4, 2026</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>✍️</span>
+          <span>The Developer</span>
+        </div>
+        <div class="blog-post-meta-item">
+          <span>⏱️</span>
+          <span>9 min read</span>
+        </div>
+      </div>
+      <div class="blog-post-tags">
+        <span class="blog-tag">React</span>
+        <span class="blog-tag">Frontend</span>
+        <span class="blog-tag">UI Development</span>
+      </div>
+    </div>
+
+    <div class="blog-post-content">
+      <h2>What is React?</h2>
+      <p>React is a JavaScript library for building user interfaces with reusable components. Developed by Facebook, React makes it easier to create interactive, dynamic web applications by managing state and re-rendering only the components that changed.</p>
+
+      <h2>Core Concepts</h2>
+      <ul>
+        <li><strong>Components:</strong> Reusable pieces of UI that manage their own state</li>
+        <li><strong>JSX:</strong> JavaScript syntax extension that looks like HTML</li>
+        <li><strong>Virtual DOM:</strong> Efficient rendering by diffing changes</li>
+        <li><strong>Props:</strong> Pass data from parent to child components</li>
+        <li><strong>State:</strong> Component data that can change and trigger re-renders</li>
+      </ul>
+
+      <h2>Functional Components</h2>
+      <pre><code>// Simple functional component
+function Welcome({ name }) {
+  return &lt;h1&gt;Hello, {name}!&lt;/h1&gt;;
+}
+
+// Component with state (hooks)
+import { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;
+        Increment
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+      <h2>Hooks</h2>
+      <p>Hooks allow you to use state and other React features in functional components:</p>
+      <ul>
+        <li><strong>useState:</strong> Add state to functional components</li>
+        <li><strong>useEffect:</strong> Handle side effects (API calls, DOM updates)</li>
+        <li><strong>useContext:</strong> Access context values</li>
+        <li><strong>useReducer:</strong> Complex state management</li>
+        <li><strong>useRef:</strong> Access DOM elements directly</li>
+      </ul>
+
+      <h2>useEffect Hook</h2>
+      <pre><code>import { useEffect, useState } from 'react';
+
+function DataFetcher() {
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    // Fetch data when component mounts
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, []); // Empty dependency array = run once
+  
+  return &lt;div&gt;{data ? JSON.stringify(data) : 'Loading...'}&lt;/div&gt;;
+}</code></pre>
+
+      <h2>Component Lifecycle</h2>
+      <p>Understanding when components mount, update, and unmount is crucial:</p>
+      <ul>
+        <li><strong>Mounting:</strong> Component is being inserted into the DOM</li>
+        <li><strong>Updating:</strong> Component is being re-rendered due to props/state changes</li>
+        <li><strong>Unmounting:</strong> Component is being removed from the DOM</li>
+      </ul>
+
+      <h2>Performance Tips</h2>
+      <ul>
+        <li>Use <code>React.memo</code> to prevent unnecessary re-renders</li>
+        <li>Use <code>useMemo</code> and <code>useCallback</code> for expensive operations</li>
+        <li>Code split with lazy loading</li>
+        <li>Use React DevTools to profile performance</li>
+      </ul>
+
+      <h2>Advanced Hooks</h2>
+      <pre><code>// useContext for global state
+const ThemeContext = React.createContext();
+
+function App() {
+  const [theme, setTheme] = useState('light');
+  return (
+    &lt;ThemeContext.Provider value={{ theme, setTheme }}&gt;
+      &lt;Header /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+// useReducer for complex state
+const reducer = (state, action) => {
+  switch(action.type) {
+    case 'ADD': return { count: state.count + 1 };
+    case 'RESET': return { count: 0 };
+    default: return state;
+  }
+};
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+  return (
+    &lt;&gt;
+      &lt;p&gt;Count: {state.count}&lt;/p&gt;
+      &lt;button onClick={() => dispatch({ type: 'ADD' })}&gt;Add&lt;/button&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+      <h2>Common Use Cases</h2>
+      <ul>
+        <li><strong>Single Page Apps:</strong> SPAs with client-side routing</li>
+        <li><strong>Progressive Web Apps:</strong> Offline-first applications</li>
+        <li><strong>Real-time Applications:</strong> Collaborative tools, chat apps</li>
+        <li><strong>Dashboards &amp; Analytics:</strong> Complex data visualization</li>
+        <li><strong>E-commerce:</strong> Dynamic product interactions</li>
+        <li><strong>Mobile Apps:</strong> React Native cross-platform development</li>
+      </ul>
+
+      <h2>Modern React Development</h2>
+      <blockquote>
+        "React is more than a library—it's a philosophy for building scalable user interfaces. Learn it once, use it anywhere."
+      </blockquote>
+
+      <h2>Testing React Components</h2>
+      <pre><code>// Jest + React Testing Library
+import { render, screen, fireEvent } from '@testing-library/react';
+
+test('button click updates count', () => {
+  render(&lt;Counter /&gt;);
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  expect(screen.getByText(/Count: 1/)).toBeInTheDocument();
+});</code></pre>
+
+      <h2>Popular Ecosystem</h2>
+      <ul>
+        <li><strong>Next.js:</strong> Full-stack React with SSR and static generation</li>
+        <li><strong>Redux/Zustand:</strong> Predictable state management</li>
+        <li><strong>React Router:</strong> Client-side routing for SPAs</li>
+        <li><strong>Tailwind CSS:</strong> Utility-first styling framework</li>
+        <li><strong>Vitest/Jest:</strong> Powerful testing frameworks</li>
+        <li><strong>Storybook:</strong> Component development environment</li>
+      </ul>
+
+      <h2>Learning Resources</h2>
+      <ul>
+        <li><strong>React Official Docs</strong> - Comprehensive guides and API reference</li>
+        <li><strong>React Patterns</strong> - Common patterns and best practices</li>
+        <li><strong>Epic React</strong> - Advanced React course</li>
+        <li><strong>React DevTools</strong> - Essential browser extension for debugging</li>
+      </ul>
+
+      <h2>Conclusion</h2>
+      <p>React has revolutionized how we build web interfaces and continues to evolve with the ecosystem. Whether you're building a simple website or a complex application, React's component-based architecture makes code more maintainable, reusable, and scalable. Master React fundamentals, understand hooks, and leverage the rich ecosystem to build world-class user interfaces.</p>
+    </div>
+
+    <div class="blog-navigation">
+      <a href="index.html" class="nav-button prev">Back to Blog</a>
+      <a href="../index.html" class="nav-button next">Back to Journal</a>
+    </div>
+  </div>
+
+    <script src="blog-cursor.js"></script>
+  <script src="blog-animation.js"></script>
+</body>
+</html>

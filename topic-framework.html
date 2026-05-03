@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Topic Framework - Notes & Organization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --paper: #f1eadb;
+      --ink: #1a1a1a;
+      --oxblood: #c8362b;
+      --note: #f2d03b;
+      --line: #d6ccba;
+      --sage: #8b9c7c;
+      --blue: #4a90a4;
+    }
+
+    body {
+      font-family: 'Newsreader', serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      border-bottom: 3px solid var(--oxblood);
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .header-subtitle {
+      font-size: 1.1em;
+      color: var(--sage);
+      font-style: italic;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    /* SIDEBAR - CATEGORY NAVIGATION */
+    .sidebar {
+      background: white;
+      border: 2px solid var(--line);
+      padding: 20px;
+      border-radius: 4px;
+      height: fit-content;
+    }
+
+    .sidebar h3 {
+      color: var(--oxblood);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--note);
+      padding-bottom: 10px;
+    }
+
+    .category-list {
+      list-style: none;
+    }
+
+    .category-item {
+      margin: 8px 0;
+      padding: 10px;
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .category-item:hover {
+      background: var(--paper);
+      border-left-color: var(--oxblood);
+      padding-left: 15px;
+    }
+
+    .category-item.active {
+      background: var(--note);
+      border-left-color: var(--oxblood);
+      font-weight: 600;
+    }
+
+    /* SEARCH & CONTROLS */
+    .controls {
+      background: white;
+      border: 2px solid var(--line);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid var(--line);
+      border-radius: 4px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 1em;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--oxblood);
+      box-shadow: 0 0 0 3px rgba(200, 54, 43, 0.1);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      background: var(--oxblood);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #a02520;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--blue);
+    }
+
+    .btn-secondary:hover {
+      background: #3a6d82;
+    }
+
+    /* MAIN CONTENT AREA */
+    .content-area {
+      background: white;
+      border: 2px solid var(--line);
+      padding: 30px;
+      border-radius: 4px;
+    }
+
+    .topic-item {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: var(--paper);
+      border-left: 5px solid var(--blue);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .topic-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .topic-item.expanded {
+      background: white;
+      border-left-color: var(--oxblood);
+    }
+
+    .topic-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .topic-title {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+
+    .topic-category {
+      display: inline-block;
+      background: var(--note);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      margin-top: 5px;
+    }
+
+    .topic-meta {
+      font-size: 0.9em;
+      color: var(--sage);
+      margin-top: 8px;
+    }
+
+    .expand-icon {
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+    }
+
+    .topic-item.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    .topic-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      margin-top: 0;
+    }
+
+    .topic-item.expanded .topic-content {
+      max-height: 2000px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px dashed var(--line);
+    }
+
+    .subtopic {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: white;
+      border-radius: 2px;
+      border-left: 3px solid var(--sage);
+    }
+
+    .subtopic-title {
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 5px;
+    }
+
+    .notes-list {
+      list-style: none;
+      margin-left: 10px;
+    }
+
+    .notes-list li {
+      padding: 5px 0;
+      margin: 5px 0;
+    }
+
+    .notes-list li:before {
+      content: "▸ ";
+      color: var(--oxblood);
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    /* ADD NEW TOPIC FORM */
+    .form-section {
+      background: white;
+      border: 2px solid var(--oxblood);
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--line);
+      border-radius: 4px;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 1em;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--oxblood);
+      box-shadow: 0 0 0 3px rgba(200, 54, 43, 0.1);
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* STATISTICS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 2px solid var(--line);
+      padding: 15px;
+      text-align: center;
+      border-radius: 4px;
+    }
+
+    .stat-number {
+      font-size: 2em;
+      font-weight: 700;
+      color: var(--oxblood);
+    }
+
+    .stat-label {
+      font-size: 0.9em;
+      color: var(--sage);
+      margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <h1>📚 Topic Framework</h1>
+      <p class="header-subtitle">Organize, Manage & Structure Your Knowledge</p>
+    </header>
+
+    <!-- STATISTICS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalTopics">0</div>
+        <div class="stat-label">Total Topics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalCategories">0</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalNotes">0</div>
+        <div class="stat-label">Notes</div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul class="category-list" id="categoryList">
+          <li class="category-item active" data-category="all">📌 All Topics</li>
+        </ul>
+      </aside>
+
+      <!-- CONTENT AREA -->
+      <div>
+        <!-- CONTROLS -->
+        <div class="controls">
+          <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search topics...">
+            <button class="btn" onclick="searchTopics()">Search</button>
+            <button class="btn btn-secondary" onclick="resetSearch()">Reset</button>
+          </div>
+        </div>
+
+        <!-- TOPICS LIST -->
+        <div class="content-area">
+          <div id="topicsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD NEW TOPIC FORM -->
+    <div class="form-section">
+      <h3 style="color: var(--oxblood); margin-bottom: 15px;">➕ Add New Topic</h3>
+      <form onsubmit="addTopic(event)">
+        <div class="form-group">
+          <label for="topicTitle">Topic Title *</label>
+          <input type="text" id="topicTitle" placeholder="Enter topic title" required>
+        </div>
+
+        <div class="form-group">
+          <label for="topicCategory">Category *</label>
+          <select id="topicCategory" required>
+            <option value="">Select category</option>
+            <option value="Programming">Programming</option>
+            <option value="Design">Design</option>
+            <option value="Database">Database</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Security">Security</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="topicContent">Content/Notes</label>
+          <textarea id="topicContent" placeholder="Add detailed notes, concepts, or information..."></textarea>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn">Add Topic</button>
+          <button type="reset" class="btn btn-secondary">Clear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // DATA STRUCTURE
+    let topics = [
+      {
+        id: 1,
+        title: "DOM Manipulation",
+        category: "Programming",
+        content: "Master selecting, modifying, and manipulating HTML elements",
+        subtopics: [
+          {
+            title: "Selecting Elements",
+            notes: [
+              "getElementById() - Select by ID",
+              "querySelector() - CSS selectors",
+              "querySelectorAll() - Multiple elements"
+            ]
+          },
+          {
+            title: "Modifying Content",
+            notes: [
+              "textContent - Change text",
+              "innerHTML - Change HTML",
+              "setAttribute() - Modify attributes"
+            ]
+          }
+        ],
+        date: new Date().toLocaleDateString(),
+        noteCount: 6
+      },
+      {
+        id: 2,
+        title: "Event Handling",
+        category: "Programming",
+        content: "Learn how to respond to user interactions",
+        subtopics: [
+          {
+            title: "Event Types",
+            notes: [
+              "click - Mouse click event",
+              "keydown/keyup - Keyboard events",
+              "change - Form input changes"
+            ]
+          },
+          {
+            title: "Event Listeners",
+            notes: [
+              "addEventListener() - Add event listener",
+              "removeEventListener() - Remove event",
+              "Event delegation - Efficient handling"
+            ]
+          }
+        ],
+        date: new Date().toLocaleDateString(),
+        noteCount: 6
+      }
+    ];
+
+    let categories = ['Programming', 'Design', 'Database', 'DevOps', 'Security', 'Other'];
+    let currentFilter = 'all';
+
+    // Initialize
+    function init() {
+      updateCategories();
+      renderTopics();
+      updateStats();
+    }
+
+    // Update category list
+    function updateCategories() {
+      const categoryList = document.getElementById('categoryList');
+      const categorySet = new Set(topics.map(t => t.category));
+      
+      categories.forEach(cat => {
+        if (!Array.from(categorySet).includes(cat) && topics.length > 0) return;
+        
+        const exists = Array.from(categoryList.children).some(
+          item => item.dataset.category === cat
+        );
+        
+        if (!exists && topics.some(t => t.category === cat)) {
+          const li = document.createElement('li');
+          li.className = 'category-item';
+          li.dataset.category = cat;
+          li.textContent = `📂 ${cat}`;
+          li.onclick = () => filterByCategory(cat);
+          categoryList.appendChild(li);
+        }
+      });
+    }
+
+    // Filter by category
+    function filterByCategory(category) {
+      currentFilter = category;
+      document.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      renderTopics();
+    }
+
+    // Render topics
+    function renderTopics() {
+      const topicsList = document.getElementById('topicsList');
+      topicsList.innerHTML = '';
+
+      let filtered = topics;
+      if (currentFilter !== 'all') {
+        filtered = topics.filter(t => t.category === currentFilter);
+      }
+
+      if (filtered.length === 0) {
+        topicsList.innerHTML = '<p style="text-align: center; color: var(--sage);">No topics found. Create one to get started! 📝</p>';
+        return;
+      }
+
+      filtered.forEach((topic, index) => {
+        const topicDiv = document.createElement('div');
+        topicDiv.className = 'topic-item';
+        topicDiv.innerHTML = `
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <div>
+              <div class="topic-title">${topic.title}</div>
+              <div class="topic-category">${topic.category}</div>
+              <div class="topic-meta">Created: ${topic.date} | ${topic.noteCount} notes</div>
+            </div>
+            <div class="expand-icon">▼</div>
+          </div>
+          <div class="topic-content">
+            <p>${topic.content}</p>
+            ${topic.subtopics.map(sub => `
+              <div class="subtopic">
+                <div class="subtopic-title">${sub.title}</div>
+                <ul class="notes-list">
+                  ${sub.notes.map(note => `<li>${note}</li>`).join('')}
+                </ul>
+              </div>
+            `).join('')}
+            <button class="btn btn-secondary" style="margin-top: 10px; font-size: 0.9em;" onclick="deleteTopic(${topic.id})">🗑️ Delete Topic</button>
+          </div>
+        `;
+        topicsList.appendChild(topicDiv);
+      });
+    }
+
+    // Toggle topic expansion
+    function toggleTopic(header) {
+      const topicItem = header.closest('.topic-item');
+      topicItem.classList.toggle('expanded');
+    }
+
+    // Add new topic
+    function addTopic(e) {
+      e.preventDefault();
+      
+      const title = document.getElementById('topicTitle').value;
+      const category = document.getElementById('topicCategory').value;
+      const content = document.getElementById('topicContent').value;
+
+      const newTopic = {
+        id: Math.max(...topics.map(t => t.id), 0) + 1,
+        title,
+        category,
+        content: content || 'No content added',
+        subtopics: [
+          {
+            title: 'Overview',
+            notes: [content || 'Content pending']
+          }
+        ],
+        date: new Date().toLocaleDateString(),
+        noteCount: 1
+      };
+
+      topics.push(newTopic);
+      
+      // Reset form
+      e.target.reset();
+      
+      // Update UI
+      updateCategories();
+      renderTopics();
+      updateStats();
+      
+      alert('✅ Topic added successfully!');
+    }
+
+    // Delete topic
+    function deleteTopic(id) {
+      if (confirm('Are you sure you want to delete this topic?')) {
+        topics = topics.filter(t => t.id !== id);
+        updateCategories();
+        renderTopics();
+        updateStats();
+      }
+    }
+
+    // Search topics
+    function searchTopics() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      if (!searchTerm) return;
+
+      const results = topics.filter(t => 
+        t.title.toLowerCase().includes(searchTerm) ||
+        t.content.toLowerCase().includes(searchTerm)
+      );
+
+      const topicsList = document.getElementById('topicsList');
+      topicsList.innerHTML = '';
+
+      if (results.length === 0) {
+        topicsList.innerHTML = '<p style="text-align: center; color: var(--sage);">No results found for "' + searchTerm + '"</p>';
+        return;
+      }
+
+      results.forEach(topic => {
+        const topicDiv = document.createElement('div');
+        topicDiv.className = 'topic-item expanded';
+        topicDiv.innerHTML = `
+          <div class="topic-header">
+            <div>
+              <div class="topic-title">${topic.title}</div>
+              <div class="topic-category">${topic.category}</div>
+            </div>
+          </div>
+          <div class="topic-content" style="max-height: 2000px; margin-top: 15px;">
+            <p>${topic.content}</p>
+          </div>
+        `;
+        topicsList.appendChild(topicDiv);
+      });
+    }
+
+    // Reset search
+    function resetSearch() {
+      document.getElementById('searchInput').value = '';
+      currentFilter = 'all';
+      renderTopics();
+    }
+
+    // Update statistics
+    function updateStats() {
+      document.getElementById('totalTopics').textContent = topics.length;
+      document.getElementById('totalCategories').textContent = new Set(topics.map(t => t.category)).size;
+      document.getElementById('totalNotes').textContent = topics.reduce((sum, t) => sum + t.noteCount, 0);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
