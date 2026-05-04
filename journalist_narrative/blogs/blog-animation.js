@@ -36,6 +36,7 @@ class BlogAnimationManager {
     this.injectAnimationStyles();
 
     // Setup handlers
+    this.setupTopBackButton();
     this.setupPageVisibility();
     this.setupNavigationLinks();
     this.triggerEntranceAnimation();
@@ -72,12 +73,36 @@ class BlogAnimationManager {
     // Use event delegation for better performance
     document.addEventListener('click', (e) => {
       const link = e.target.closest('.nav-button, a[href$=".html"]');
-      if (!link || link.target === '_blank' || link.href?.includes('#')) return;
-      
+      if (!link || link.target === '_blank' || link.getAttribute('href')?.startsWith('#')) return;
+
       if (!this.isAnimating) {
         this.triggerExitAnimation();
       }
     }, false);
+  }
+
+  setupTopBackButton() {
+    const container = this.containerCache;
+    if (!container) return;
+
+    // Check if top bar already exists
+    if (container.querySelector('.blog-top-bar')) return;
+
+    // Create top bar
+    const topBar = document.createElement('div');
+    topBar.className = 'blog-top-bar';
+    topBar.innerHTML = `
+      <a href="../index.html#archive" class="blog-top-back-button" title="Return to Blog Archive"><span>← Back to Archive</span></a>
+    `;
+
+    // Insert at the very beginning of the container
+    container.insertAdjacentElement('afterbegin', topBar);
+
+    // Hide the old navigation if it exists
+    const navigation = container.querySelector('.blog-navigation');
+    if (navigation) {
+      navigation.style.display = 'none';
+    }
   }
 
   setupKeyboardNavigation() {

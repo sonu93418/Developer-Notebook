@@ -68,6 +68,50 @@ function updateDigitalWatch() {
   bookTopWatch.textContent = time;
 }
 
+function initializeArchiveSection() {
+  const archiveGrid = document.getElementById('archiveGrid');
+  if (!archiveGrid || typeof ToolboxConfig === 'undefined') return;
+
+  const tools = Object.values(ToolboxConfig.tools);
+  archiveGrid.innerHTML = tools.map((tool, index) => `
+    <a class="archive-card${index === 0 ? ' featured' : ''}" href="blogs/${tool.id}.html" style="--accent: ${tool.color};">
+      <div class="archive-card-top">
+        <span class="archive-card-index">${String(index + 1).padStart(2, '0')}</span>
+        <span class="archive-card-chip">${tool.full}</span>
+      </div>
+      <div class="archive-card-icon">${tool.icon}</div>
+      <div class="archive-card-copy">
+        <h3 class="archive-card-title">${tool.title}</h3>
+        <p>${tool.description}</p>
+      </div>
+      <div class="archive-card-meta">
+        <span class="archive-card-tag">Open guide</span>
+        <span class="archive-card-tag">${tool.icon}</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+function openArchiveFromDeepLink() {
+  const target = window.location.hash.replace('#', '').toLowerCase();
+  if (target !== 'archive') return;
+
+  const archivePage = spreadPages.find((page) => page.dataset.page === 'archive');
+  if (!archivePage) return;
+
+  spreadPages.forEach((page) => {
+    page.classList.remove('is-active', 'exit-left', 'enter-right');
+  });
+  archivePage.classList.add('is-active');
+
+  app.dataset.state = 'book';
+  app.dataset.opening = 'false';
+  app.dataset.closing = 'false';
+  setVisiblePages([archivePage]);
+  currentPage = 'archive';
+  setActiveNav('archive');
+}
+
 function setCursorPosition(x, y) {
   if (!pageCursor) return;
   cursorX = x;
@@ -242,5 +286,7 @@ contactForm.addEventListener('submit', (event) => {
 });
 
 initializePageState();
+initializeArchiveSection();
+openArchiveFromDeepLink();
 updateDigitalWatch();
 setInterval(updateDigitalWatch, 1000);
